@@ -11,6 +11,6 @@ jobs:
     with:
       name: main
       version: 1.19.1 # renovate: datasource=github-releases depName=pgbouncer/pgbouncer versioning=loose extractVersion=^pgbouncer_(?<version>.+)$
-      revision: '2'
+      revision: '3'
       major_only_tag: true
     secrets: inherit
