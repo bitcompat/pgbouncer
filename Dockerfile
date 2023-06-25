@@ -80,7 +80,7 @@ ENV HOME="/" \
     APP_VERSION="${VERSION}" \
     BITNAMI_APP_NAME="${PACKAGE}" \
     LD_LIBRARY_PATH=/opt/bitnami/postgresql/lib/ \
-    PATH="/opt/bitnami/${PACKAGE}/bin:$PATH"
+    PATH="/opt/bitnami/${PACKAGE}/bin:/opt/bitnami/common/bin:$PATH"
 
 LABEL org.opencontainers.image.ref.name="${VERSION}-debian-11-r1" \
       org.opencontainers.image.title="${PACKAGE}" \
