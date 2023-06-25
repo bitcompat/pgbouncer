@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1.4
 
 ARG PYTHON_VERSION=3.9
+ARG PACKAGE=pgbouncer
+ARG TARGET_DIR=pgbouncer
+ARG VERSION=1.19.1
 
 FROM public.ecr.aws/bitcompat/python:${PYTHON_VERSION} as python
 FROM public.ecr.aws/bitcompat/ini-file:latest as ini-file
@@ -10,10 +13,10 @@ FROM public.ecr.aws/bitcompat/postgresql:14 as postgresql
 
 FROM docker.io/bitnami/minideb:bullseye AS builder
 
-ARG PACKAGE=pgbouncer
-ARG TARGET_DIR=pgbouncer
+ARG PACKAGE
+ARG TARGET_DIR
 # renovate: datasource=github-releases depName=pgbouncer/pgbouncer versioning=loose extractVersion=^pgbouncer_(?<version>.+)$
-ARG VERSION=1.19.1
+ARG VERSION
 ARG TARGETARCH
 
 ARG PATH="/opt/bitnami/python/bin:$PATH"
