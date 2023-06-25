@@ -1,0 +1,16 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: bitcompat/base/.github/workflows/build.yaml@main
+    with:
+      name: main
+      version: 1.19.1 # renovate: datasource=github-releases depName=pgbouncer/pgbouncer versioning=loose extractVersion=^pgbouncer_(?<version>.+)$
+      revision: '1'
+      major_only_tag: true
+    secrets: inherit
