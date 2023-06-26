@@ -100,11 +100,13 @@ RUN <<EOT /bin/bash
   mkdir -p /docker-entrypoint-initdb.d
   mkdir -p /opt/bitnami/pgbouncer/conf
   mkdir -p /opt/bitnami/pgbouncer/logs
+  mkdir -p /opt/bitnami/pgbouncer/tmp
 
   chown -R 1001 /bitnami/pgbouncer/conf
   chown -R 1001 /docker-entrypoint-initdb.d
   chown -R 1001 /opt/bitnami/pgbouncer/conf
   chown -R 1001 /opt/bitnami/pgbouncer/logs
+  chown -R 1001 /opt/bitnami/pgbouncer/tmp
 EOT
 
 EXPOSE 6432
