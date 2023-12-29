@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-ARG PYTHON_VERSION=3.9
+ARG PYTHON_VERSION=3.12
 ARG PACKAGE=pgbouncer
 ARG TARGET_DIR=pgbouncer
 ARG VERSION=1.19.1
