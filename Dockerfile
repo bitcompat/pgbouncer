@@ -3,15 +3,16 @@
 ARG PYTHON_VERSION=3.9
 ARG PACKAGE=pgbouncer
 ARG TARGET_DIR=pgbouncer
-ARG VERSION=1.19.1
+ARG BUILD_VERSION=1.19.1
+ARG VERSION=${BUILD_VERSION}
 
-FROM public.ecr.aws/bitcompat/python:${PYTHON_VERSION} as python
-FROM public.ecr.aws/bitcompat/ini-file:latest as ini-file
-FROM public.ecr.aws/bitcompat/nss-wrapper:latest as nss-wrapper
-FROM public.ecr.aws/bitcompat/wait-for-port:latest as wait-for-port
-FROM public.ecr.aws/bitcompat/postgresql:14 as postgresql
+FROM public.ecr.aws/bitcompat/python:${PYTHON_VERSION}-trixie as python
+FROM public.ecr.aws/bitcompat/ini-file:1.4.9-trixie as ini-file
+FROM public.ecr.aws/bitcompat/nss-wrapper:1.1.16-trixie as nss-wrapper
+FROM public.ecr.aws/bitcompat/wait-for-port:1.0.10-trixie as wait-for-port
+FROM public.ecr.aws/bitcompat/postgresql:14-trixie as postgresql
 
-FROM docker.io/bitnami/minideb:bullseye AS builder
+FROM docker.io/bitnami/minideb:trixie AS builder
 
 ARG PACKAGE
 ARG TARGET_DIR
@@ -71,21 +72,21 @@ EOT
 RUN rm -rf /opt/bitnami/python
 RUN find /opt/bitnami/pgbouncer -executable -type f | xargs strip --strip-unneeded || true
 
-FROM docker.io/bitnami/minideb:bullseye as stage-0
+FROM docker.io/bitnami/minideb:trixie as stage-0
 
 ARG TARGETARCH
 ARG VERSION
 ARG PACKAGE
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH}" \
-    OS_FLAVOUR="debian-11" \
+    OS_FLAVOUR="debian-13" \
     OS_NAME="linux" \
     APP_VERSION="${VERSION}" \
     BITNAMI_APP_NAME="${PACKAGE}" \
     LD_LIBRARY_PATH=/opt/bitnami/postgresql/lib/ \
     PATH="/opt/bitnami/${PACKAGE}/bin:/opt/bitnami/common/bin:$PATH"
 
-LABEL org.opencontainers.image.ref.name="${VERSION}-debian-11-r1" \
+LABEL org.opencontainers.image.ref.name="${VERSION}-trixie" \
       org.opencontainers.image.title="${PACKAGE}" \
       org.opencontainers.image.version="${VERSION}"
 
@@ -95,7 +96,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY --link rootfs /
 COPY --link --from=builder /opt/bitnami/ /opt/bitnami/
 RUN <<EOT /bin/bash
-  install_packages ca-certificates gzip procps tar libevent-2.1 locales libreadline8
+  install_packages ca-certificates gzip procps tar libevent-2.1-7t64 locales libreadline8t64
   mkdir -p /bitnami/pgbouncer/conf
   mkdir -p /docker-entrypoint-initdb.d
   mkdir -p /opt/bitnami/pgbouncer/conf
